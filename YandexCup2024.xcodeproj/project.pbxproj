@@ -16,6 +16,7 @@
 		39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */; };
 		39C670CD2CD03A0D00F170E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670CC2CD03A0D00F170E3 /* Colors.xcassets */; };
 		39C670CF2CD03F1B00F170E3 /* ShapePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */; };
+		39C670D12CD175A600F170E3 /* DrawingGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		39C670CC2CD03A0D00F170E3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapePickerView.swift; sourceTree = "<group>"; };
+		39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingGestureRecognizer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */,
 				39C670CC2CD03A0D00F170E3 /* Colors.xcassets */,
 				39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */,
+				39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */,
 			);
 			path = YandexCup2024;
 			sourceTree = "<group>";
@@ -158,6 +161,7 @@
 				39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */,
 				39C670BD2CCFE62400F170E3 /* Item.swift in Sources */,
 				39C670B92CCFE62400F170E3 /* YandexCup2024App.swift in Sources */,
+				39C670D12CD175A600F170E3 /* DrawingGestureRecognizer.swift in Sources */,
 				39C670CF2CD03F1B00F170E3 /* ShapePickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

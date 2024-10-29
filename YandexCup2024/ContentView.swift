@@ -21,7 +21,8 @@ enum PickerType {
 
 struct ContentView: View {
     @State var presentedPicker: PickerType?
-    @State var selectedTool: ToolType?
+    @State var selectedTool: ToolType = .pencil
+    @State var selectedColor: Color = .blue
     
     private func undo() {
         
@@ -109,15 +110,13 @@ struct ContentView: View {
                 })
             }
             ZStack(alignment: .bottom) {
-                Canvas { _, _ in
-                    
-                }
+                DrawingViewRepresentable(selectedColor: $selectedColor, selectedTool: $selectedTool)
                 .background(Image(.canvasBackground))
                 .cornerRadius(20)
                 
                 switch presentedPicker {
                 case .color:
-                    ColorPickerView()
+                    ColorPickerView(selectedColor: $selectedColor)
                 case .shape:
                     ShapePickerView()
                 case nil:
@@ -147,7 +146,7 @@ struct ContentView: View {
                 })
                 Button(action: openColorPicker, label: {
                     Circle()
-                        .fill(.blue)
+                        .fill(selectedColor)
                         .stroke(presentedPicker == .color ? .selection : .clear)
                         .frame(width: 28, height: 28)
                 })

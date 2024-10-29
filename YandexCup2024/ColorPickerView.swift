@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ColorPickerView: View {
     @State var isFullColorPickerPresented = false
+    @Binding var selectedColor: Color
     
     var lastColors: [Color] = [.white, .red, .black, .blue]
     
@@ -18,6 +19,20 @@ struct ColorPickerView: View {
         }
     }
     
+    @ViewBuilder
+    func cell(for color: Color) -> some View {
+        Button(action: {
+            withAnimation {
+                selectedColor = color
+            }
+        }, label: {
+            Circle()
+                .fill(color)
+                .stroke(selectedColor == color ? .selection : .clear)
+                .frame(width: 32, height: 32)
+        })
+    }
+    
     var body: some View {
         VStack(spacing: 8) {
             if isFullColorPickerPresented {
@@ -25,9 +40,12 @@ struct ColorPickerView: View {
                     ForEach(0..<5) { i in
                         HStack {
                             ForEach(0..<5) { j in
-                                Circle()
-                                    .fill(Color(red: Double(i) / 4, green: Double(j) / 4, blue: Double(4 - i - j) / 4))
-                                    .frame(width: 32, height: 32)
+                                cell(for: Color(
+                                    red: Double(i) / 4,
+                                    green: Double(j) / 4,
+                                    blue: Double(4 - i - j) / 4)
+                                )
+                                
                                 if j != 4 {
                                     Spacer()
                                 }
@@ -49,9 +67,7 @@ struct ColorPickerView: View {
                 })
                 
                 ForEach(0..<4) { i in
-                    Circle()
-                        .fill(lastColors[i])
-                        .frame(width: 32, height: 32)
+                    cell(for: lastColors[i])
                 }
             }
             .padding(16)
@@ -63,5 +79,5 @@ struct ColorPickerView: View {
 }
 
 #Preview {
-    ColorPickerView()
+    ColorPickerView(selectedColor: .constant(.blue))
 }
