@@ -36,9 +36,11 @@ struct ShapePickerView: View {
         HStack(spacing: 16) {
             ForEach(ShapeType.allCases) { shape in
                 shape.icon
+                    .renderingMode(.template)
                     .frame(width: 32, height: 32)
             }
         }
+        .foregroundColor(.primary)
         .padding(16)
         .background(.ultraThinMaterial)
         .cornerRadius(4)

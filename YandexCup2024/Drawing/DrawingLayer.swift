@@ -11,6 +11,10 @@ class DrawingLayer: ObservableObject {
     @Published private(set) var strokes: [Stroke] = []
     private var undoStrokes: [Stroke] = []
     
+    func copyContent(to layer: DrawingLayer) {
+        layer.strokes = strokes
+    }
+    
     func addStroke(_ stroke: Stroke) {
         strokes.append(stroke)
         undoStrokes = []

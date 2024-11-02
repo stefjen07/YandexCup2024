@@ -11,6 +11,7 @@ import Combine
 class DrawingSession: ObservableObject {
     @Published var selectedColor: Color
     @Published var selectedTool: ToolType
+    @Published var fps: Int = 15
     private var layers: [DrawingLayer] = [.init()]
     
     private var currentLayerCancellable: AnyCancellable?
@@ -19,8 +20,12 @@ class DrawingSession: ObservableObject {
             currentLayerCancellable = currentLayer.objectWillChange.sink { [weak self] in
                 self?.drawingView?.setNeedsDisplay()
             }
+            drawingView?.setNeedsDisplay()
         }
     }
+    
+    private var timer: Timer?
+    @Published private(set) var isPlaying = false
     
     weak var drawingView: UIView?
     
@@ -33,9 +38,18 @@ class DrawingSession: ObservableObject {
         layers[currentLayerIndex]
     }
     
+    var layerIndexText: String {
+        "\(currentLayerIndex+1) / \(layers.count)"
+    }
+    
     func addLayer() {
         layers.insert(.init(), at: currentLayerIndex + 1)
         currentLayerIndex += 1
+    }
+    
+    func duplicateLayer() {
+        addLayer()
+        layers[currentLayerIndex-1].copyContent(to: currentLayer)
     }
     
     func removeLayer() {
@@ -47,5 +61,39 @@ class DrawingSession: ObservableObject {
             layers.append(DrawingLayer())
             drawingView?.setNeedsDisplay()
         }
+    }
+    
+    func removeAllLayers() {
+        layers = [.init()]
+        currentLayerIndex = 0
+    }
+    
+    func goPreviousLayer() {
+        guard currentLayerIndex > 0 else { return }
+        currentLayerIndex -= 1
+    }
+    
+    func goNextLayer() {
+        guard currentLayerIndex < layers.count - 1 else { return }
+        currentLayerIndex += 1
+    }
+    
+    func play() {
+        isPlaying = true
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0 / Double(fps), repeats: true) { [weak self] timer in
+            guard let self else { return }
+            
+            if currentLayerIndex == layers.count - 1 {
+                isPlaying = false
+                timer.invalidate()
+            } else {
+                goNextLayer()
+            }
+        }
+    }
+    
+    func pause() {
+        isPlaying = false
+        timer?.invalidate()
     }
 }

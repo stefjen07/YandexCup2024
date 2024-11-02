@@ -63,7 +63,7 @@ struct ColorPickerView: View {
                 Button(action: openFullColorPicker, label: {
                     Image(.palette)
                         .renderingMode(.template)
-                        .foregroundColor(isFullColorPickerPresented ? .selection : .white)
+                        .foregroundColor(isFullColorPickerPresented ? .selection : .primary)
                 })
                 
                 ForEach(0..<4) { i in
