@@ -8,10 +8,25 @@
 import SwiftUI
 import SwiftData
 
-enum ToolType {
+enum ToolType: Int, Identifiable, CaseIterable {
     case pencil
     case brush
     case eraser
+    
+    var id: Int {
+        rawValue
+    }
+    
+    var icon: Image {
+        switch self {
+        case .pencil:
+            .init(.pencil)
+        case .brush:
+            .init(.brush)
+        case .eraser:
+            .init(.erase)
+        }
+    }
 }
 
 enum PickerType {
@@ -21,24 +36,8 @@ enum PickerType {
 
 struct ContentView: View {
     @State var presentedPicker: PickerType?
-    @State var selectedTool: ToolType = .pencil
-    @State var selectedColor: Color = .blue
     
-    private func undo() {
-        
-    }
-    
-    private func redo() {
-        
-    }
-    
-    private func deleteFrame() {
-        
-    }
-    
-    private func createNewFrame() {
-        
-    }
+    @ObservedObject var session: DrawingSession = .init(selectedColor: .blue, selectedTool: .pencil)
     
     private func openFramesList() {
         
@@ -59,20 +58,18 @@ struct ContentView: View {
     }
     
     private func activatePencil() {
-        withAnimation {
-            selectedTool = .pencil
-        }
+        
     }
     
     private func activateBrush() {
         withAnimation {
-            selectedTool = .brush
+            session.selectedTool = .brush
         }
     }
     
     private func activateEraser() {
         withAnimation {
-            selectedTool = .eraser
+            session.selectedTool = .eraser
         }
     }
     
@@ -82,75 +79,85 @@ struct ContentView: View {
         }
     }
     
-    var body: some View {
-        VStack(spacing: 16) {
-            HStack(spacing: 16) {
-                Button(action: undo, label: {
-                    Image(.arrowLeft)
-                })
-                Button(action: redo, label: {
-                    Image(.arrowRight)
-                })
-                Spacer()
-                Button(action: deleteFrame, label: {
-                    Image(.deleteFrame)
-                })
-                Button(action: createNewFrame, label: {
-                    Image(.newFrame)
-                })
-                Button(action: openFramesList, label: {
-                    Image(.frames)
-                })
-                Spacer()
-                Button(action: pauseAnimation, label: {
-                    Image(.pause)
-                })
-                Button(action: playAnimation, label: {
-                    Image(.play)
+    @ViewBuilder
+    private var header: some View {
+        HStack(spacing: 16) {
+            Button(action: session.currentLayer.undo, label: {
+                Image(.arrowLeft)
+            })
+            .disabled(session.currentLayer.isUndoDisabled)
+            Button(action: session.currentLayer.redo, label: {
+                Image(.arrowRight)
+            })
+            .disabled(session.currentLayer.isRedoDisabled)
+            Spacer()
+            Button(action: session.removeLayer, label: {
+                Image(.deleteFrame)
+            })
+            Button(action: session.addLayer, label: {
+                Image(.newFrame)
+            })
+            Button(action: openFramesList, label: {
+                Image(.frames)
+            })
+            Spacer()
+            Button(action: pauseAnimation, label: {
+                Image(.pause)
+            })
+            Button(action: playAnimation, label: {
+                Image(.play)
+            })
+        }
+    }
+    
+    private var footer: some View {
+        HStack(spacing: 16) {
+            ForEach(ToolType.allCases) { tool in
+                Button(action: {
+                    withAnimation {
+                        session.selectedTool = tool
+                    }
+                }, label: {
+                    tool.icon
+                        .renderingMode(.template)
+                        .foregroundColor(session.selectedTool == tool ? .selection : .white)
                 })
             }
+            
+            Button(action: openPresetShapes, label: {
+                Image(.presetShape)
+                    .renderingMode(.template)
+                    .foregroundColor(presentedPicker == .shape ? .selection : .white)
+            })
+            Button(action: openColorPicker, label: {
+                Circle()
+                    .fill(session.selectedColor)
+                    .stroke(presentedPicker == .color ? .selection : .clear)
+                    .frame(width: 28, height: 28)
+            })
+        }
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            header
+            
             ZStack(alignment: .bottom) {
-                DrawingViewRepresentable(selectedColor: $selectedColor, selectedTool: $selectedTool)
+                DrawingViewRepresentable(session: session)
                 .background(Image(.canvasBackground))
                 .cornerRadius(20)
                 
                 switch presentedPicker {
                 case .color:
-                    ColorPickerView(selectedColor: $selectedColor)
+                    ColorPickerView(selectedColor: $session.selectedColor)
                 case .shape:
                     ShapePickerView()
                 case nil:
                     EmptyView()
                 }
             }
-            HStack(spacing: 16) {
-                Button(action: activatePencil, label: {
-                    Image(.pencil)
-                        .renderingMode(.template)
-                        .foregroundColor(selectedTool == .pencil ? .selection : .white)
-                })
-                Button(action: activateBrush, label: {
-                    Image(.brush)
-                        .renderingMode(.template)
-                        .foregroundColor(selectedTool == .brush ? .selection : .white)
-                })
-                Button(action: activateEraser, label: {
-                    Image(.erase)
-                        .renderingMode(.template)
-                        .foregroundColor(selectedTool == .eraser ? .selection : .white)
-                })
-                Button(action: openPresetShapes, label: {
-                    Image(.presetShape)
-                        .renderingMode(.template)
-                        .foregroundColor(presentedPicker == .shape ? .selection : .white)
-                })
-                Button(action: openColorPicker, label: {
-                    Circle()
-                        .fill(selectedColor)
-                        .stroke(presentedPicker == .color ? .selection : .clear)
-                        .frame(width: 28, height: 28)
-                })
-            }
+            
+            footer
         }
         .padding(16.25)
         .background(.black)

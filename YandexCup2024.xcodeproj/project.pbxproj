@@ -16,7 +16,11 @@
 		39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */; };
 		39C670CD2CD03A0D00F170E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670CC2CD03A0D00F170E3 /* Colors.xcassets */; };
 		39C670CF2CD03F1B00F170E3 /* ShapePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */; };
-		39C670D12CD175A600F170E3 /* DrawingGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */; };
+		39C670D42CD6752A00F170E3 /* DrawingLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D32CD6752A00F170E3 /* DrawingLayer.swift */; };
+		39C670D62CD676AB00F170E3 /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D52CD676AB00F170E3 /* DrawingView.swift */; };
+		39C670D82CD676CE00F170E3 /* DrawingGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D72CD676CE00F170E3 /* DrawingGestureRecognizer.swift */; };
+		39C670DA2CD676E300F170E3 /* DrawingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D92CD676E300F170E3 /* DrawingSession.swift */; };
+		39C670DC2CD676F300F170E3 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670DB2CD676F300F170E3 /* Stroke.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +34,11 @@
 		39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		39C670CC2CD03A0D00F170E3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapePickerView.swift; sourceTree = "<group>"; };
-		39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingGestureRecognizer.swift; sourceTree = "<group>"; };
+		39C670D32CD6752A00F170E3 /* DrawingLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingLayer.swift; sourceTree = "<group>"; };
+		39C670D52CD676AB00F170E3 /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
+		39C670D72CD676CE00F170E3 /* DrawingGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingGestureRecognizer.swift; sourceTree = "<group>"; };
+		39C670D92CD676E300F170E3 /* DrawingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingSession.swift; sourceTree = "<group>"; };
+		39C670DB2CD676F300F170E3 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,7 @@
 		39C670B72CCFE62400F170E3 /* YandexCup2024 */ = {
 			isa = PBXGroup;
 			children = (
+				39C670D22CD5830C00F170E3 /* Drawing */,
 				39C670B82CCFE62400F170E3 /* YandexCup2024App.swift */,
 				39C670BA2CCFE62400F170E3 /* ContentView.swift */,
 				39C670BC2CCFE62400F170E3 /* Item.swift */,
@@ -72,7 +81,6 @@
 				39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */,
 				39C670CC2CD03A0D00F170E3 /* Colors.xcassets */,
 				39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */,
-				39C670D02CD175A600F170E3 /* DrawingGestureRecognizer.swift */,
 			);
 			path = YandexCup2024;
 			sourceTree = "<group>";
@@ -83,6 +91,18 @@
 				39C670C12CCFE62500F170E3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		39C670D22CD5830C00F170E3 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				39C670D32CD6752A00F170E3 /* DrawingLayer.swift */,
+				39C670D52CD676AB00F170E3 /* DrawingView.swift */,
+				39C670D72CD676CE00F170E3 /* DrawingGestureRecognizer.swift */,
+				39C670D92CD676E300F170E3 /* DrawingSession.swift */,
+				39C670DB2CD676F300F170E3 /* Stroke.swift */,
+			);
+			path = Drawing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,8 +180,12 @@
 				39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */,
 				39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */,
 				39C670BD2CCFE62400F170E3 /* Item.swift in Sources */,
+				39C670D62CD676AB00F170E3 /* DrawingView.swift in Sources */,
+				39C670D82CD676CE00F170E3 /* DrawingGestureRecognizer.swift in Sources */,
 				39C670B92CCFE62400F170E3 /* YandexCup2024App.swift in Sources */,
-				39C670D12CD175A600F170E3 /* DrawingGestureRecognizer.swift in Sources */,
+				39C670DA2CD676E300F170E3 /* DrawingSession.swift in Sources */,
+				39C670DC2CD676F300F170E3 /* Stroke.swift in Sources */,
+				39C670D42CD6752A00F170E3 /* DrawingLayer.swift in Sources */,
 				39C670CF2CD03F1B00F170E3 /* ShapePickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
