@@ -11,8 +11,10 @@ import Combine
 class DrawingSession: ObservableObject {
     @Published var selectedColor: Color
     @Published var selectedTool: ToolType
+    @Published var pencilWidth: Int = 1
+    @Published var brushWidth: Int = 15
     @Published var fps: Int = 15
-    private var layers: [DrawingLayer] = [.init()]
+    private(set) var layers: [DrawingLayer] = [.init()]
     
     private var currentLayerCancellable: AnyCancellable?
     @Published private var currentLayerIndex = 0 {
@@ -26,6 +28,9 @@ class DrawingSession: ObservableObject {
     
     private var timer: Timer?
     @Published private(set) var isPlaying = false
+    
+    private let gifExporter = GIFExporter()
+    var canvasSize: CGSize?
     
     weak var drawingView: UIView?
     
@@ -78,6 +83,11 @@ class DrawingSession: ObservableObject {
         currentLayerIndex += 1
     }
     
+    func selectLayer(_ index: Int) {
+        guard (0..<layers.count).contains(index) else { return }
+        currentLayerIndex = index
+    }
+    
     func play() {
         isPlaying = true
         timer = Timer.scheduledTimer(withTimeInterval: 1.0 / Double(fps), repeats: true) { [weak self] timer in
@@ -95,5 +105,10 @@ class DrawingSession: ObservableObject {
     func pause() {
         isPlaying = false
         timer?.invalidate()
+    }
+    
+    func export() -> URL? {
+        guard let canvasSize else { return nil }
+        return gifExporter.export(layers: layers, fps: fps, size: canvasSize)
     }
 }

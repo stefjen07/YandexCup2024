@@ -29,6 +29,11 @@ class DrawingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        session.canvasSize = frame.size
+    }
+    
     override func draw(_ rect: CGRect) {
         UIColor.clear.setFill()
         session.currentLayer.strokes.forEach(drawStroke)
@@ -38,27 +43,8 @@ class DrawingView: UIView {
     }
     
     private func drawStroke(_ stroke: Stroke) {
-        guard let firstPoint = stroke.points.first else {
-            return
-        }
-        
-        let path = UIBezierPath()
-        path.move(to: firstPoint)
-        
-        switch stroke.type {
-        case .pencil:
-            path.lineWidth = 1
-        case .brush:
-            path.lineWidth = 15
-        case .eraser:
-            break
-        }
-        
-        for i in 1..<stroke.points.count {
-            path.addLine(to: stroke.points[i])
-        }
         UIColor(stroke.color).setStroke()
-        path.stroke()
+        stroke.path?.stroke()
     }
 }
 

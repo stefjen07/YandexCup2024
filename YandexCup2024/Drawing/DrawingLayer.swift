@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import CoreGraphics
+import UIKit
 
-class DrawingLayer: ObservableObject {
+class DrawingLayer: ObservableObject, Identifiable {
+    public let id = UUID()
     @Published private(set) var strokes: [Stroke] = []
     private var undoStrokes: [Stroke] = []
     
@@ -68,5 +71,32 @@ class DrawingLayer: ObservableObject {
             newStrokes.append($0)
         }
         strokes = newStrokes
+    }
+    
+    func renderImage(size: CGSize, scale: CGFloat = 1) -> CGImage? {
+        let context = CGContext(
+            data: nil,
+            width: Int(size.width),
+            height: Int(size.height),
+            bitsPerComponent: 8,
+            bytesPerRow: 4 * Int(size.width),
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGBitmapInfo.byteOrder32Little.rawValue |
+            CGImageAlphaInfo.premultipliedLast.rawValue & CGBitmapInfo.alphaInfoMask.rawValue
+        )
+        
+        context?.translateBy(x: 0, y: size.height)
+        context?.scaleBy(x: 1, y: -1)
+        
+        for stroke in strokes {
+            if let path = stroke.path {
+                context?.setStrokeColor(UIColor(stroke.color).cgColor)
+                context?.setLineWidth(path.lineWidth)
+                context?.addPath(path.cgPath)
+                context?.strokePath()
+            }
+        }
+        
+        return context?.makeImage()
     }
 }

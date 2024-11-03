@@ -10,5 +10,21 @@ import SwiftUI
 struct Stroke {
     var color: Color
     var points: [CGPoint]
-    var type: ToolType
+    var width: CGFloat
+    
+    var path: UIBezierPath? {
+        guard let firstPoint = points.first else {
+            return nil
+        }
+        
+        let path = UIBezierPath()
+        path.lineWidth = width
+        path.move(to: firstPoint)
+        
+        for i in 1..<points.count {
+            path.addLine(to: points[i])
+        }
+        
+        return path
+    }
 }

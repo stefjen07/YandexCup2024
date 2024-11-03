@@ -7,12 +7,22 @@
 
 import SwiftUI
 
-struct ActivityView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+struct ActivityView: UIViewControllerRepresentable {
+    var activityItems: [Any]
+    var excludedActivityTypes: [UIActivity.ActivityType]? = nil
 
-#Preview {
-    ActivityView()
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems as [AnyObject],
+            applicationActivities: nil
+        )
+
+        controller.excludedActivityTypes = excludedActivityTypes
+
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {
+        
+    }
 }

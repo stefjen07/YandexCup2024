@@ -29,11 +29,6 @@ enum ToolType: Int, Identifiable, CaseIterable {
     }
 }
 
-enum PickerType {
-    case color
-    case shape
-}
-
 struct ContentView: View {
     @ObservedObject var session: DrawingSession = .init(selectedColor: .blue, selectedTool: .pencil)
     

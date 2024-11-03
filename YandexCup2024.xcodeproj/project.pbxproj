@@ -11,7 +11,6 @@
 		39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670BA2CCFE62400F170E3 /* ContentView.swift */; };
 		39C670BD2CCFE62400F170E3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670BC2CCFE62400F170E3 /* Item.swift */; };
 		39C670BF2CCFE62500F170E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670BE2CCFE62500F170E3 /* Assets.xcassets */; };
-		39C670C22CCFE62500F170E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670C12CCFE62500F170E3 /* Preview Assets.xcassets */; };
 		39C670C92CCFE71500F170E3 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670C82CCFE71500F170E3 /* Icons.xcassets */; };
 		39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */; };
 		39C670CD2CD03A0D00F170E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670CC2CD03A0D00F170E3 /* Colors.xcassets */; };
@@ -22,6 +21,10 @@
 		39C670DA2CD676E300F170E3 /* DrawingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670D92CD676E300F170E3 /* DrawingSession.swift */; };
 		39C670DC2CD676F300F170E3 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670DB2CD676F300F170E3 /* Stroke.swift */; };
 		39C670DE2CD67C2500F170E3 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670DD2CD67C2500F170E3 /* SessionView.swift */; };
+		39C670E02CD7772D00F170E3 /* GIFExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670DF2CD7772D00F170E3 /* GIFExporter.swift */; };
+		39C670E22CD77B7900F170E3 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E12CD77B7900F170E3 /* ActivityView.swift */; };
+		39C670E52CD77C8A00F170E3 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */; };
+		39C670E72CD781A200F170E3 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E62CD781A200F170E3 /* FramesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +33,6 @@
 		39C670BA2CCFE62400F170E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		39C670BC2CCFE62400F170E3 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		39C670BE2CCFE62500F170E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		39C670C12CCFE62500F170E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		39C670C82CCFE71500F170E3 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		39C670CC2CD03A0D00F170E3 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -41,6 +43,10 @@
 		39C670D92CD676E300F170E3 /* DrawingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingSession.swift; sourceTree = "<group>"; };
 		39C670DB2CD676F300F170E3 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		39C670DD2CD67C2500F170E3 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
+		39C670DF2CD7772D00F170E3 /* GIFExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFExporter.swift; sourceTree = "<group>"; };
+		39C670E12CD77B7900F170E3 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		39C670E62CD781A200F170E3 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,27 +79,22 @@
 		39C670B72CCFE62400F170E3 /* YandexCup2024 */ = {
 			isa = PBXGroup;
 			children = (
+				39C670E32CD77C8100F170E3 /* Extensions */,
 				39C670D22CD5830C00F170E3 /* Drawing */,
 				39C670B82CCFE62400F170E3 /* YandexCup2024App.swift */,
 				39C670BA2CCFE62400F170E3 /* ContentView.swift */,
 				39C670BC2CCFE62400F170E3 /* Item.swift */,
 				39C670BE2CCFE62500F170E3 /* Assets.xcassets */,
-				39C670C02CCFE62500F170E3 /* Preview Content */,
 				39C670C82CCFE71500F170E3 /* Icons.xcassets */,
 				39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */,
 				39C670CC2CD03A0D00F170E3 /* Colors.xcassets */,
 				39C670CE2CD03F1B00F170E3 /* ShapePickerView.swift */,
 				39C670DD2CD67C2500F170E3 /* SessionView.swift */,
+				39C670DF2CD7772D00F170E3 /* GIFExporter.swift */,
+				39C670E12CD77B7900F170E3 /* ActivityView.swift */,
+				39C670E62CD781A200F170E3 /* FramesView.swift */,
 			);
 			path = YandexCup2024;
-			sourceTree = "<group>";
-		};
-		39C670C02CCFE62500F170E3 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				39C670C12CCFE62500F170E3 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		39C670D22CD5830C00F170E3 /* Drawing */ = {
@@ -106,6 +107,14 @@
 				39C670DB2CD676F300F170E3 /* Stroke.swift */,
 			);
 			path = Drawing;
+			sourceTree = "<group>";
+		};
+		39C670E32CD77C8100F170E3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,7 +175,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39C670C22CCFE62500F170E3 /* Preview Assets.xcassets in Resources */,
 				39C670CD2CD03A0D00F170E3 /* Colors.xcassets in Resources */,
 				39C670C92CCFE71500F170E3 /* Icons.xcassets in Resources */,
 				39C670BF2CCFE62500F170E3 /* Assets.xcassets in Resources */,
@@ -181,8 +189,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C670DE2CD67C2500F170E3 /* SessionView.swift in Sources */,
+				39C670E72CD781A200F170E3 /* FramesView.swift in Sources */,
+				39C670E52CD77C8A00F170E3 /* URL+Extensions.swift in Sources */,
 				39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */,
+				39C670E22CD77B7900F170E3 /* ActivityView.swift in Sources */,
 				39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */,
+				39C670E02CD7772D00F170E3 /* GIFExporter.swift in Sources */,
 				39C670BD2CCFE62400F170E3 /* Item.swift in Sources */,
 				39C670D62CD676AB00F170E3 /* DrawingView.swift in Sources */,
 				39C670D82CD676CE00F170E3 /* DrawingGestureRecognizer.swift in Sources */,
@@ -323,7 +335,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"YandexCup2024/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -350,7 +362,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"YandexCup2024/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

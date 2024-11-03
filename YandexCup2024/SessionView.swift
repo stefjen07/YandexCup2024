@@ -16,15 +16,25 @@ enum LayerRemovingStrategy: Int, Identifiable {
     }
 }
 
+enum PickerType {
+    case color
+    case shape
+    case frame
+}
+
 struct SessionView: View {
     @State var presentedPicker: PickerType?
+    @State var sharedItem: URL?
+    
     @ObservedObject var session: DrawingSession
     @ObservedObject var currentLayer: DrawingLayer
     
     @State var layerRemovingStrategy: LayerRemovingStrategy?
     
     private func openFramesList() {
-        
+        withAnimation {
+            presentedPicker = presentedPicker == .frame ? .none : .frame
+        }
     }
     
     private func openPresetShapes() {
@@ -48,19 +58,21 @@ struct SessionView: View {
             })
             .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
             .disabled(currentLayer.isUndoDisabled)
+            
             Button(action: currentLayer.redo, label: {
                 Image(.arrowRight)
                     .renderingMode(.template)
             })
             .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
             .disabled(currentLayer.isRedoDisabled)
+            
             Spacer()
+            
             Button(action: {
                 layerRemovingStrategy = .current
             }, label: {
                 Image(.deleteFrame)
                     .renderingMode(.template)
-                    .foregroundColor(.red)
                     .cornerRadius(6)
             })
             .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
@@ -106,14 +118,18 @@ struct SessionView: View {
             Button(action: openFramesList, label: {
                 Image(.frames)
                     .renderingMode(.template)
+                    .foregroundColor(presentedPicker == .frame ? .selection : .primary)
             })
+            
             Spacer()
+            
             Button(action: session.pause, label: {
                 Image(.pause)
                     .renderingMode(.template)
             })
             .foregroundColor(!session.isPlaying ? .secondary : .primary)
             .disabled(!session.isPlaying)
+            
             Button(action: session.play, label: {
                 Image(.play)
                     .renderingMode(.template)
@@ -143,6 +159,8 @@ struct SessionView: View {
     private var footer: some View {
         HStack(spacing: 16) {
             Menu(content: {
+                Stepper("Pencil width: \(session.pencilWidth)", value: $session.pencilWidth, in: 1...5)
+                Stepper("Brush width: \(session.brushWidth)", value: $session.brushWidth, in: 10...25)
                 Stepper("\(session.fps) fps", value: $session.fps, in: 1...60)
             }, label: {
                 Image(systemName: "gearshape")
@@ -171,6 +189,7 @@ struct SessionView: View {
                     .renderingMode(.template)
                     .foregroundColor(presentedPicker == .shape ? .selection : .primary)
             })
+            
             Button(action: openColorPicker, label: {
                 Circle()
                     .fill(session.selectedColor)
@@ -180,7 +199,9 @@ struct SessionView: View {
             
             Spacer()
             
-            Button(action: {}, label: {
+            Button(action: {
+                sharedItem = session.export()
+            }, label: {
                 Image(systemName: "square.and.arrow.up")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -194,38 +215,75 @@ struct SessionView: View {
         VStack(spacing: 16) {
             header
             
-            ZStack(alignment: .bottom) {
-                DrawingViewRepresentable(session: session)
-                    .background(
-                        Image(.canvasBackground)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    )
-                    .cornerRadius(20)
-                    .clipped()
+            HStack(spacing: 0) {
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 16.25)
+                    .contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 20).onEnded { value in
+                        if value.translation.width > 0 {
+                            session.goPreviousLayer()
+                        }
+                    })
                 
-                switch presentedPicker {
-                case .color:
-                    ColorPickerView(selectedColor: $session.selectedColor)
-                case .shape:
-                    ShapePickerView()
-                case nil:
-                    EmptyView()
+                ZStack(alignment: .bottom) {
+                    DrawingViewRepresentable(session: session)
+                        .background(
+                            Image(.canvasBackground)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        )
+                        .cornerRadius(20)
+                        .clipped()
+                    
+                    switch presentedPicker {
+                    case .color:
+                        ColorPickerView(selectedColor: $session.selectedColor)
+                    case .shape:
+                        ShapePickerView()
+                    case .frame:
+                        FramesView(
+                            session: session,
+                            isPresented: .init(get: {
+                                presentedPicker == .frame
+                            }, set: {
+                                presentedPicker = $0 ? .frame : nil
+                            })
+                        )
+                    case nil:
+                        EmptyView()
+                    }
                 }
+                
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 16.25)
+                    .contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 20).onEnded { value in
+                        if value.translation.width < 0 {
+                            session.goNextLayer()
+                        }
+                    })
             }
+            .padding(.horizontal, -16.25)
+            
             HStack {
                 Spacer()
                 Text(session.layerIndexText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 Spacer()
             }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .gesture(DragGesture(minimumDistance: 20).onEnded { value in
-                    value.translation.width > 0 ? session.goPreviousLayer() : session.goNextLayer()
-                })
+            .contentShape(Rectangle())
+            .gesture(DragGesture(minimumDistance: 20).onEnded { value in
+                value.translation.width > 0 ? session.goPreviousLayer() : session.goNextLayer()
+            })
             
             footer
         }
         .padding(16.25)
+        .sheet(item: $sharedItem) { url in
+            ActivityView(activityItems: [url])
+        }
     }
 }

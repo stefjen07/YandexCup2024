@@ -30,10 +30,19 @@ class DrawingGestureRecognizer: UIGestureRecognizer {
         if drawingView.session.selectedTool == .eraser {
             lastPoint = touches.first?.preciseLocation(in: drawingView)
         } else {
+            let width = switch drawingView.session.selectedTool {
+            case .brush:
+                drawingView.session.brushWidth
+            case .pencil:
+                drawingView.session.pencilWidth
+            default:
+                0
+            }
+            
             stroke = Stroke(
                 color: drawingView.session.selectedColor,
                 points: [],
-                type: drawingView.session.selectedTool
+                width: CGFloat(width)
             )
             
             append(touches)
