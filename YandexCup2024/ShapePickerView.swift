@@ -7,40 +7,30 @@
 
 import SwiftUI
 
-enum ShapeType: Int, Identifiable, CaseIterable {
-    case rectangle
-    case circle
-    case triangle
-    case arrow
-    
-    var id: Int {
-        rawValue
-    }
-    
-    var icon: Image {
-        switch self {
-        case .rectangle:
-            .init(.rectangle)
-        case .circle:
-            .init(.circle)
-        case .triangle:
-            .init(.triangle)
-        case .arrow:
-            .init(.arrow)
-        }
-    }
-}
-
 struct ShapePickerView: View {
+    @Binding var selectedTool: ToolType
+    
+    var selectedShape: ShapeType? {
+        if case .shape(let shapeType) = selectedTool {
+            return shapeType
+        }
+        
+        return nil
+    }
+    
     var body: some View {
         HStack(spacing: 16) {
             ForEach(ShapeType.allCases) { shape in
-                shape.icon
-                    .renderingMode(.template)
-                    .frame(width: 32, height: 32)
+                Button(action: {
+                    selectedTool = .shape(shape)
+                }, label: {
+                    shape.icon
+                        .renderingMode(.template)
+                        .foregroundColor(selectedShape == shape ? .selection : .primary)
+                        .frame(width: 32, height: 32)
+                })
             }
         }
-        .foregroundColor(.primary)
         .padding(16)
         .background(.ultraThinMaterial)
         .cornerRadius(4)
@@ -48,5 +38,5 @@ struct ShapePickerView: View {
 }
 
 #Preview {
-    ShapePickerView()
+    ShapePickerView(selectedTool: .constant(.brush))
 }

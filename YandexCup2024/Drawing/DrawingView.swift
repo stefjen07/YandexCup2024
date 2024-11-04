@@ -36,10 +36,28 @@ class DrawingView: UIView {
     
     override func draw(_ rect: CGRect) {
         UIColor.clear.setFill()
-        session.currentLayer.strokes.forEach(drawStroke)
+        session.currentLayer.actions.forEach {
+            switch $0 {
+            case .shape(let shape):
+                drawShape(shape)
+            case .stroke(let stroke):
+                drawStroke(stroke)
+            }
+        }
         if let stroke = gestureRecognizer.stroke {
             drawStroke(stroke)
         }
+        if let shape = gestureRecognizer.shape {
+            drawShape(shape)
+        }
+    }
+    
+    private func drawShape(_ shape: Shape) {
+        UIColor(shape.color).setStroke()
+        
+        let path = UIBezierPath(cgPath: shape.path)
+        path.lineWidth = shape.width
+        path.stroke()
     }
     
     private func drawStroke(_ stroke: Stroke) {

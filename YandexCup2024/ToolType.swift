@@ -1,20 +1,29 @@
 //
-//  ContentView.swift
+//  ToolType.swift
 //  YandexCup2024
 //
 //  Created by Yauheni Stsefankou on 28.10.2024.
 //
 
 import SwiftUI
-import SwiftData
 
-enum ToolType: Int, Identifiable, CaseIterable {
+enum ToolType: Identifiable, Equatable {
     case pencil
     case brush
     case eraser
+    case shape(ShapeType)
     
     var id: Int {
-        rawValue
+        switch self {
+        case .pencil:
+            0
+        case .brush:
+            1
+        case .eraser:
+            2
+        case .shape(let shapeType):
+            3 + shapeType.rawValue
+        }
     }
     
     var icon: Image {
@@ -25,18 +34,8 @@ enum ToolType: Int, Identifiable, CaseIterable {
             .init(.brush)
         case .eraser:
             .init(.erase)
+        case .shape(let shapeType):
+            shapeType.icon
         }
     }
-}
-
-struct ContentView: View {
-    @ObservedObject var session: DrawingSession = .init(selectedColor: .blue, selectedTool: .pencil)
-    
-    var body: some View {
-        SessionView(session: session, currentLayer: session.currentLayer)
-    }
-}
-
-#Preview {
-    ContentView()
 }

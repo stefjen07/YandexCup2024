@@ -11,34 +11,39 @@ import UIKit
 
 class DrawingLayer: ObservableObject, Identifiable {
     public let id = UUID()
-    @Published private(set) var strokes: [Stroke] = []
-    private var undoStrokes: [Stroke] = []
+    @Published private(set) var actions: [DrawingAction] = []
+    private var undoActions: [DrawingAction] = []
     
     func copyContent(to layer: DrawingLayer) {
-        layer.strokes = strokes
+        layer.actions = actions
     }
     
     func addStroke(_ stroke: Stroke) {
-        strokes.append(stroke)
-        undoStrokes = []
+        actions.append(.stroke(stroke))
+        undoActions = []
+    }
+    
+    func addShape(_ shape: Shape) {
+        actions.append(.shape(shape))
+        undoActions = []
     }
     
     func undo() {
-        guard !strokes.isEmpty else { return }
-        undoStrokes.append(strokes.removeLast())
+        guard !actions.isEmpty else { return }
+        undoActions.append(actions.removeLast())
     }
     
     func redo() {
-        guard !undoStrokes.isEmpty else { return }
-        strokes.append(undoStrokes.removeFirst())
+        guard !undoActions.isEmpty else { return }
+        actions.append(undoActions.removeFirst())
     }
     
     var isUndoDisabled: Bool {
-        strokes.isEmpty
+        actions.isEmpty
     }
     
     var isRedoDisabled: Bool {
-        undoStrokes.isEmpty
+        undoActions.isEmpty
     }
     
     func linesCross(start1: CGPoint, end1: CGPoint, start2: CGPoint, end2: CGPoint) -> Bool {
@@ -59,18 +64,35 @@ class DrawingLayer: ObservableObject, Identifiable {
         return (0...1).contains(ab) && (0...1).contains(cd)
     }
     
-    func eraseStrokes(byLine line: (CGPoint, CGPoint)) {
-        var newStrokes: [Stroke] = []
-        strokes.forEach {
-            for i in 1..<$0.points.count {
-                if linesCross(start1: line.0, end1: line.1, start2: $0.points[i-1], end2: $0.points[i]) {
-                    undoStrokes.append($0)
-                    return
+    func eraseActions(byLine line: (CGPoint, CGPoint)) {
+        var newActions: [DrawingAction] = []
+        actions.forEach {
+            switch $0 {
+            case .stroke(let stroke):
+                for i in 1..<stroke.points.count {
+                    if linesCross(start1: line.0, end1: line.1, start2: stroke.points[i-1], end2: stroke.points[i]) {
+                        undoActions.append($0)
+                        return
+                    }
+                }
+            case .shape(let shape):
+                let rect = shape.rect
+                switch shape.type {
+                case .rectangle:
+                    if rect.contains(line.1) {
+                        undoActions.append($0)
+                        return
+                    }
+                case .circle:
+                    if line.1.distance(to: rect.center) <= rect.radius {
+                        undoActions.append($0)
+                        return
+                    }
                 }
             }
-            newStrokes.append($0)
+            newActions.append($0)
         }
-        strokes = newStrokes
+        actions = newActions
     }
     
     func renderImage(size: CGSize, scale: CGFloat = 1) -> CGImage? {
@@ -88,11 +110,24 @@ class DrawingLayer: ObservableObject, Identifiable {
         context?.translateBy(x: 0, y: size.height)
         context?.scaleBy(x: 1, y: -1)
         
-        for stroke in strokes {
-            if let path = stroke.path {
-                context?.setStrokeColor(UIColor(stroke.color).cgColor)
-                context?.setLineWidth(path.lineWidth)
-                context?.addPath(path.cgPath)
+        for action in actions {
+            switch action {
+            case .stroke(let stroke):
+                if let path = stroke.path {
+                    context?.setStrokeColor(UIColor(stroke.color).cgColor)
+                    context?.setLineWidth(path.lineWidth)
+                    context?.addPath(path.cgPath)
+                    context?.strokePath()
+                }
+            case .shape(let shape):
+                context?.setStrokeColor(UIColor(shape.color).cgColor)
+                context?.setLineWidth(shape.width)
+                switch shape.type {
+                case .rectangle:
+                    context?.addRect(shape.rect)
+                case .circle:
+                    context?.addEllipse(in: shape.rect)
+                }
                 context?.strokePath()
             }
         }

@@ -49,77 +49,87 @@ struct SessionView: View {
         }
     }
     
+    private var isShapeSelected: Bool {
+        if case .shape(_) = session.selectedTool {
+            return true
+        }
+        
+        return false
+    }
+    
     @ViewBuilder
     private var header: some View {
         HStack(spacing: 16) {
-            Button(action: currentLayer.undo, label: {
-                Image(.arrowLeft)
-                    .renderingMode(.template)
-            })
-            .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
-            .disabled(currentLayer.isUndoDisabled)
-            
-            Button(action: currentLayer.redo, label: {
-                Image(.arrowRight)
-                    .renderingMode(.template)
-            })
-            .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
-            .disabled(currentLayer.isRedoDisabled)
-            
-            Spacer()
-            
-            Button(action: {
-                layerRemovingStrategy = .current
-            }, label: {
-                Image(.deleteFrame)
-                    .renderingMode(.template)
-                    .cornerRadius(6)
-            })
-            .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
-            .contextMenu {
-                VStack {
-                    Button(action: {
-                        layerRemovingStrategy = .current
-                    }, label: {
-                        Image(systemName: "1.square")
-                        Text("Remove current layer")
-                    })
-                    
-                    Button(action: {
-                        layerRemovingStrategy = .all
-                    }, label: {
-                        Image(systemName: "square.grid.3x1.below.line.grid.1x2")
-                        Text("Remove all layers")
-                            .foregroundColor(.red)
-                    })
+            if !session.isPlaying {
+                Button(action: currentLayer.undo, label: {
+                    Image(.arrowLeft)
+                        .renderingMode(.template)
+                })
+                .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
+                .disabled(currentLayer.isUndoDisabled)
+                
+                Button(action: currentLayer.redo, label: {
+                    Image(.arrowRight)
+                        .renderingMode(.template)
+                })
+                .foregroundColor(currentLayer.isUndoDisabled ? .secondary : .primary)
+                .disabled(currentLayer.isRedoDisabled)
+                
+                Spacer()
+                
+                Button(action: {
+                    layerRemovingStrategy = .current
+                }, label: {
+                    Image(.deleteFrame)
+                        .renderingMode(.template)
+                        .cornerRadius(6)
+                })
+                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
+                .contextMenu {
+                    VStack {
+                        Button(action: {
+                            layerRemovingStrategy = .current
+                        }, label: {
+                            Image(systemName: "1.square")
+                            Text("Remove current layer")
+                        })
+                        
+                        Button(action: {
+                            layerRemovingStrategy = .all
+                        }, label: {
+                            Image(systemName: "square.grid.3x1.below.line.grid.1x2")
+                            Text("Remove all layers")
+                                .foregroundColor(.red)
+                        })
+                    }
                 }
-            }
-            
-            Button(action: session.addLayer, label: {
-                Image(.newFrame)
-                    .renderingMode(.template)
-            })
-            .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
-            .contextMenu {
-                VStack {
-                    Button(action: session.addLayer, label: {
-                        Image(systemName: "plus")
-                        Text("Create new layer")
-                    })
-                    
-                    Button(action: session.duplicateLayer, label: {
-                        Image(systemName: "square.on.square")
-                        Text("Duplicate current layer")
-                    })
+                
+                Button(action: session.addLayer, label: {
+                    Image(.newFrame)
+                        .renderingMode(.template)
+                })
+                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
+                .contextMenu {
+                    VStack {
+                        Button(action: session.addLayer, label: {
+                            Image(systemName: "plus")
+                            Text("Create new layer")
+                        })
+                        
+                        Button(action: session.duplicateLayer, label: {
+                            Image(systemName: "square.on.square")
+                            Text("Duplicate current layer")
+                        })
+                    }
+                    .foregroundColor(.red)
                 }
-                .foregroundColor(.red)
+                
+                Button(action: openFramesList, label: {
+                    Image(.frames)
+                        .renderingMode(.template)
+                        .foregroundColor(presentedPicker == .frame ? .selection : .primary)
+                })
             }
-            
-            Button(action: openFramesList, label: {
-                Image(.frames)
-                    .renderingMode(.template)
-                    .foregroundColor(presentedPicker == .frame ? .selection : .primary)
-            })
             
             Spacer()
             
@@ -161,6 +171,7 @@ struct SessionView: View {
             Menu(content: {
                 Stepper("Pencil width: \(session.pencilWidth)", value: $session.pencilWidth, in: 1...5)
                 Stepper("Brush width: \(session.brushWidth)", value: $session.brushWidth, in: 10...25)
+                Stepper("Shape width: \(session.shapeWidth)", value: $session.shapeWidth, in: 1...15)
                 Stepper("\(session.fps) fps", value: $session.fps, in: 1...60)
             }, label: {
                 Image(systemName: "gearshape")
@@ -172,7 +183,7 @@ struct SessionView: View {
             
             Spacer()
             
-            ForEach(ToolType.allCases) { tool in
+            ForEach([ToolType.pencil, .brush, .eraser]) { tool in
                 Button(action: {
                     withAnimation {
                         session.selectedTool = tool
@@ -187,7 +198,7 @@ struct SessionView: View {
             Button(action: openPresetShapes, label: {
                 Image(.presetShape)
                     .renderingMode(.template)
-                    .foregroundColor(presentedPicker == .shape ? .selection : .primary)
+                    .foregroundColor(presentedPicker == .shape || isShapeSelected ? .selection : .primary)
             })
             
             Button(action: openColorPicker, label: {
@@ -228,6 +239,7 @@ struct SessionView: View {
                 
                 ZStack(alignment: .bottom) {
                     DrawingViewRepresentable(session: session)
+                        .disabled(session.isPlaying)
                         .background(
                             Image(.canvasBackground)
                                 .resizable()
@@ -240,7 +252,7 @@ struct SessionView: View {
                     case .color:
                         ColorPickerView(selectedColor: $session.selectedColor)
                     case .shape:
-                        ShapePickerView()
+                        ShapePickerView(selectedTool: $session.selectedTool)
                     case .frame:
                         FramesView(
                             session: session,
@@ -280,6 +292,7 @@ struct SessionView: View {
             })
             
             footer
+                .opacity(session.isPlaying ? 0 : 1)
         }
         .padding(16.25)
         .sheet(item: $sharedItem) { url in

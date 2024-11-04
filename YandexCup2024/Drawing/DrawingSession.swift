@@ -13,6 +13,7 @@ class DrawingSession: ObservableObject {
     @Published var selectedTool: ToolType
     @Published var pencilWidth: Int = 1
     @Published var brushWidth: Int = 15
+    @Published var shapeWidth: Int = 1
     @Published var fps: Int = 15
     private(set) var layers: [DrawingLayer] = [.init()]
     
@@ -94,8 +95,7 @@ class DrawingSession: ObservableObject {
             guard let self else { return }
             
             if currentLayerIndex == layers.count - 1 {
-                isPlaying = false
-                timer.invalidate()
+                currentLayerIndex = 0
             } else {
                 goNextLayer()
             }
@@ -104,6 +104,7 @@ class DrawingSession: ObservableObject {
     
     func pause() {
         isPlaying = false
+        currentLayerIndex = layers.count - 1
         timer?.invalidate()
     }
     

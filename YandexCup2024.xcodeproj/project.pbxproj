@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		39C670B92CCFE62400F170E3 /* YandexCup2024App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670B82CCFE62400F170E3 /* YandexCup2024App.swift */; };
-		39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670BA2CCFE62400F170E3 /* ContentView.swift */; };
-		39C670BD2CCFE62400F170E3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670BC2CCFE62400F170E3 /* Item.swift */; };
+		39C670BB2CCFE62400F170E3 /* ToolType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670BA2CCFE62400F170E3 /* ToolType.swift */; };
 		39C670BF2CCFE62500F170E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670BE2CCFE62500F170E3 /* Assets.xcassets */; };
 		39C670C92CCFE71500F170E3 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39C670C82CCFE71500F170E3 /* Icons.xcassets */; };
 		39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */; };
@@ -25,13 +24,16 @@
 		39C670E22CD77B7900F170E3 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E12CD77B7900F170E3 /* ActivityView.swift */; };
 		39C670E52CD77C8A00F170E3 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */; };
 		39C670E72CD781A200F170E3 /* FramesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E62CD781A200F170E3 /* FramesView.swift */; };
+		39C670E92CD83FC700F170E3 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670E82CD83FC700F170E3 /* Shape.swift */; };
+		39C670EB2CD840D000F170E3 /* DrawingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670EA2CD840D000F170E3 /* DrawingAction.swift */; };
+		39C670ED2CD8437F00F170E3 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670EC2CD8437F00F170E3 /* CGRect+Extensions.swift */; };
+		39C670EF2CD843D000F170E3 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C670EE2CD843D000F170E3 /* CGPoint+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		39C670B52CCFE62400F170E3 /* YandexCup2024.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YandexCup2024.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39C670B82CCFE62400F170E3 /* YandexCup2024App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexCup2024App.swift; sourceTree = "<group>"; };
-		39C670BA2CCFE62400F170E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		39C670BC2CCFE62400F170E3 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		39C670BA2CCFE62400F170E3 /* ToolType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolType.swift; sourceTree = "<group>"; };
 		39C670BE2CCFE62500F170E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		39C670C82CCFE71500F170E3 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -47,6 +49,10 @@
 		39C670E12CD77B7900F170E3 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		39C670E62CD781A200F170E3 /* FramesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramesView.swift; sourceTree = "<group>"; };
+		39C670E82CD83FC700F170E3 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		39C670EA2CD840D000F170E3 /* DrawingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingAction.swift; sourceTree = "<group>"; };
+		39C670EC2CD8437F00F170E3 /* CGRect+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Extensions.swift"; sourceTree = "<group>"; };
+		39C670EE2CD843D000F170E3 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +88,7 @@
 				39C670E32CD77C8100F170E3 /* Extensions */,
 				39C670D22CD5830C00F170E3 /* Drawing */,
 				39C670B82CCFE62400F170E3 /* YandexCup2024App.swift */,
-				39C670BA2CCFE62400F170E3 /* ContentView.swift */,
-				39C670BC2CCFE62400F170E3 /* Item.swift */,
+				39C670BA2CCFE62400F170E3 /* ToolType.swift */,
 				39C670BE2CCFE62500F170E3 /* Assets.xcassets */,
 				39C670C82CCFE71500F170E3 /* Icons.xcassets */,
 				39C670CA2CD036CF00F170E3 /* ColorPickerView.swift */,
@@ -105,6 +110,8 @@
 				39C670D72CD676CE00F170E3 /* DrawingGestureRecognizer.swift */,
 				39C670D92CD676E300F170E3 /* DrawingSession.swift */,
 				39C670DB2CD676F300F170E3 /* Stroke.swift */,
+				39C670E82CD83FC700F170E3 /* Shape.swift */,
+				39C670EA2CD840D000F170E3 /* DrawingAction.swift */,
 			);
 			path = Drawing;
 			sourceTree = "<group>";
@@ -113,6 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				39C670E42CD77C8A00F170E3 /* URL+Extensions.swift */,
+				39C670EC2CD8437F00F170E3 /* CGRect+Extensions.swift */,
+				39C670EE2CD843D000F170E3 /* CGPoint+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -190,15 +199,18 @@
 			files = (
 				39C670DE2CD67C2500F170E3 /* SessionView.swift in Sources */,
 				39C670E72CD781A200F170E3 /* FramesView.swift in Sources */,
+				39C670ED2CD8437F00F170E3 /* CGRect+Extensions.swift in Sources */,
 				39C670E52CD77C8A00F170E3 /* URL+Extensions.swift in Sources */,
+				39C670EF2CD843D000F170E3 /* CGPoint+Extensions.swift in Sources */,
 				39C670CB2CD036CF00F170E3 /* ColorPickerView.swift in Sources */,
 				39C670E22CD77B7900F170E3 /* ActivityView.swift in Sources */,
-				39C670BB2CCFE62400F170E3 /* ContentView.swift in Sources */,
+				39C670BB2CCFE62400F170E3 /* ToolType.swift in Sources */,
 				39C670E02CD7772D00F170E3 /* GIFExporter.swift in Sources */,
-				39C670BD2CCFE62400F170E3 /* Item.swift in Sources */,
 				39C670D62CD676AB00F170E3 /* DrawingView.swift in Sources */,
+				39C670EB2CD840D000F170E3 /* DrawingAction.swift in Sources */,
 				39C670D82CD676CE00F170E3 /* DrawingGestureRecognizer.swift in Sources */,
 				39C670B92CCFE62400F170E3 /* YandexCup2024App.swift in Sources */,
+				39C670E92CD83FC700F170E3 /* Shape.swift in Sources */,
 				39C670DA2CD676E300F170E3 /* DrawingSession.swift in Sources */,
 				39C670DC2CD676F300F170E3 /* Stroke.swift in Sources */,
 				39C670D42CD6752A00F170E3 /* DrawingLayer.swift in Sources */,

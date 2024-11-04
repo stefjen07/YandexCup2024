@@ -6,27 +6,14 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct YandexCup2024App: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @ObservedObject var session: DrawingSession = .init(selectedColor: .blue, selectedTool: .pencil)
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SessionView(session: session, currentLayer: session.currentLayer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

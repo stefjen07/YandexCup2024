@@ -9,6 +9,7 @@ import UIKit
 
 class DrawingGestureRecognizer: UIGestureRecognizer {
     var stroke: Stroke?
+    var shape: Shape?
     private var lastPoint: CGPoint?
     
     private var drawingView: DrawingView? {
@@ -27,9 +28,20 @@ class DrawingGestureRecognizer: UIGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         guard let drawingView else { return }
         
-        if drawingView.session.selectedTool == .eraser {
+        switch drawingView.session.selectedTool {
+        case .eraser:
             lastPoint = touches.first?.preciseLocation(in: drawingView)
-        } else {
+        case .shape(let shapeType):
+            if let point = touches.first?.preciseLocation(in: drawingView) {
+                shape = Shape(
+                    type: shapeType,
+                    startPoint: point,
+                    endPoint: point,
+                    width: CGFloat(drawingView.session.shapeWidth),
+                    color: drawingView.session.selectedColor
+                )
+            }
+        default:
             let width = switch drawingView.session.selectedTool {
             case .brush:
                 drawingView.session.brushWidth
@@ -51,14 +63,17 @@ class DrawingGestureRecognizer: UIGestureRecognizer {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
         if numberOfTouches == 1 {
-            
-            
-            if let drawingView,
-               let lastPoint,
-               let newPoint = touches.first?.preciseLocation(in: drawingView),
-               drawingView.session.selectedTool == .eraser
+            if shape != nil {
+                if let point = touches.first?.preciseLocation(in: drawingView) {
+                    shape?.endPoint = point
+                    drawingView?.setNeedsDisplay()
+                }
+            } else if let drawingView,
+                      let lastPoint,
+                      let newPoint = touches.first?.preciseLocation(in: drawingView),
+                      drawingView.session.selectedTool == .eraser
             {
-                drawingView.session.currentLayer.eraseStrokes(byLine: (lastPoint, newPoint))
+                drawingView.session.currentLayer.eraseActions(byLine: (lastPoint, newPoint))
                 self.lastPoint = newPoint
             } else {
                 append(touches)
@@ -69,9 +84,16 @@ class DrawingGestureRecognizer: UIGestureRecognizer {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
         append(touches)
         
+        if let point = touches.first?.preciseLocation(in: drawingView) {
+            shape?.endPoint = point
+        }
+        
         if let stroke {
             drawingView?.session.currentLayer.addStroke(stroke)
             self.stroke = nil
+        } else if let shape {
+            drawingView?.session.currentLayer.addShape(shape)
+            self.shape = nil
         }
     }
     
