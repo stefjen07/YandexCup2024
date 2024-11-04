@@ -9,6 +9,8 @@ import Foundation
 import CoreGraphics
 import UIKit
 
+private let canvasBackground = UIImage(named: "canvasBackground")?.cgImage
+
 class DrawingLayer: ObservableObject, Identifiable {
     public let id = UUID()
     @Published private(set) var actions: [DrawingAction] = []
@@ -98,10 +100,10 @@ class DrawingLayer: ObservableObject, Identifiable {
     func renderImage(size: CGSize, scale: CGFloat = 1) -> CGImage? {
         guard let context = CGContext(
             data: nil,
-            width: Int(size.width),
-            height: Int(size.height),
+            width: Int(size.width * scale),
+            height: Int(size.height * scale),
             bitsPerComponent: 8,
-            bytesPerRow: 4 * Int(size.width),
+            bytesPerRow: 4 * Int(size.width * scale),
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGBitmapInfo.byteOrder32Little.rawValue |
             CGImageAlphaInfo.premultipliedLast.rawValue & CGBitmapInfo.alphaInfoMask.rawValue
@@ -109,8 +111,12 @@ class DrawingLayer: ObservableObject, Identifiable {
             return nil
         }
         
-        context.translateBy(x: 0, y: size.height)
-        context.scaleBy(x: 1, y: -1)
+        context.translateBy(x: 0, y: scale * size.height)
+        context.scaleBy(x: scale, y: -scale)
+        
+        if let canvasBackground {
+            context.draw(canvasBackground, in: .init(origin: .zero, size: size), byTiling: false)
+        }
         
         for action in actions {
             switch action {

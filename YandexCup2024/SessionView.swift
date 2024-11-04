@@ -59,6 +59,12 @@ struct SessionView: View {
         return false
     }
     
+    private var framesCountFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.minimum = 1
+        return formatter
+    }
+    
     @ViewBuilder
     private var header: some View {
         HStack(spacing: 16) {
@@ -130,7 +136,7 @@ struct SessionView: View {
                         .renderingMode(.template)
                 })
                 .alert("Generate frames", isPresented: $isFrameGenerationAlertPresented) {
-                    TextField("Enter frames count: ", value: $framesToGenerate, formatter: NumberFormatter())
+                    TextField("Enter frames count", value: $framesToGenerate, formatter: framesCountFormatter)
                     Button("Generate", action: {
                         session.generateLayers(count: framesToGenerate)
                     })
@@ -267,14 +273,11 @@ struct SessionView: View {
                     case .shape:
                         ShapePickerView(selectedTool: $session.selectedTool)
                     case .frame:
-                        FramesView(
-                            session: session,
-                            isPresented: .init(get: {
-                                presentedPicker == .frame
-                            }, set: {
-                                presentedPicker = $0 ? .frame : nil
-                            })
-                        )
+                        FramesCollectionView(session: session, isPresented: .init(get: {
+                            presentedPicker == .frame
+                        }, set: {
+                            presentedPicker = $0 ? .frame : nil
+                        }))
                     case nil:
                         EmptyView()
                     }
@@ -311,5 +314,6 @@ struct SessionView: View {
         .sheet(item: $sharedItem) { url in
             ActivityView(activityItems: [url])
         }
+        .ignoresSafeArea(.keyboard)
     }
 }

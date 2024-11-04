@@ -59,7 +59,7 @@ class DrawingSession: ObservableObject {
     }
     
     func generateLayers(count: Int) {
-        guard let canvasSize else { return }
+        guard let canvasSize, count > 0 else { return }
         
         let newLayers = (0..<count).map { _ in
             let layer = DrawingLayer()
