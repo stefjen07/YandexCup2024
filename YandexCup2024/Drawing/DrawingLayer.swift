@@ -96,7 +96,7 @@ class DrawingLayer: ObservableObject, Identifiable {
     }
     
     func renderImage(size: CGSize, scale: CGFloat = 1) -> CGImage? {
-        let context = CGContext(
+        guard let context = CGContext(
             data: nil,
             width: Int(size.width),
             height: Int(size.height),
@@ -105,33 +105,35 @@ class DrawingLayer: ObservableObject, Identifiable {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGBitmapInfo.byteOrder32Little.rawValue |
             CGImageAlphaInfo.premultipliedLast.rawValue & CGBitmapInfo.alphaInfoMask.rawValue
-        )
+        ) else {
+            return nil
+        }
         
-        context?.translateBy(x: 0, y: size.height)
-        context?.scaleBy(x: 1, y: -1)
+        context.translateBy(x: 0, y: size.height)
+        context.scaleBy(x: 1, y: -1)
         
         for action in actions {
             switch action {
             case .stroke(let stroke):
                 if let path = stroke.path {
-                    context?.setStrokeColor(UIColor(stroke.color).cgColor)
-                    context?.setLineWidth(path.lineWidth)
-                    context?.addPath(path.cgPath)
-                    context?.strokePath()
+                    context.setStrokeColor(UIColor(stroke.color).cgColor)
+                    context.setLineWidth(path.lineWidth)
+                    context.addPath(path.cgPath)
+                    context.strokePath()
                 }
             case .shape(let shape):
-                context?.setStrokeColor(UIColor(shape.color).cgColor)
-                context?.setLineWidth(shape.width)
+                context.setStrokeColor(UIColor(shape.color).cgColor)
+                context.setLineWidth(shape.width)
                 switch shape.type {
                 case .rectangle:
-                    context?.addRect(shape.rect)
+                    context.addRect(shape.rect)
                 case .circle:
-                    context?.addEllipse(in: shape.rect)
+                    context.addEllipse(in: shape.rect)
                 }
-                context?.strokePath()
+                context.strokePath()
             }
         }
         
-        return context?.makeImage()
+        return context.makeImage()
     }
 }

@@ -25,6 +25,8 @@ enum PickerType {
 struct SessionView: View {
     @State var presentedPicker: PickerType?
     @State var sharedItem: URL?
+    @State var isFrameGenerationAlertPresented = false
+    @State var framesToGenerate: Int = 1
     
     @ObservedObject var session: DrawingSession
     @ObservedObject var currentLayer: DrawingLayer
@@ -91,37 +93,48 @@ struct SessionView: View {
                             layerRemovingStrategy = .current
                         }, label: {
                             Image(systemName: "1.square")
-                            Text("Remove current layer")
+                            Text("Remove current frame")
                         })
                         
                         Button(action: {
                             layerRemovingStrategy = .all
                         }, label: {
                             Image(systemName: "square.grid.3x1.below.line.grid.1x2")
-                            Text("Remove all layers")
+                            Text("Remove all frames")
                                 .foregroundColor(.red)
                         })
                     }
                 }
                 
-                Button(action: session.addLayer, label: {
+                Menu(content: {
+                    Button(action: session.addLayer, label: {
+                        Image(systemName: "plus")
+                        Text("Create new frame")
+                    })
+                    
+                    Button(action: session.duplicateLayer, label: {
+                        Image(systemName: "square.on.square")
+                        Text("Duplicate current frame")
+                    })
+                        
+                    Button(action: {
+                        framesToGenerate = 1
+                        isFrameGenerationAlertPresented = true
+                    }, label: {
+                        Image(systemName: "timelapse")
+                        Text("Generate frames")
+                    })
+                    .foregroundColor(.red)
+                }, label: {
                     Image(.newFrame)
                         .renderingMode(.template)
                 })
-                .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 6))
-                .contextMenu {
-                    VStack {
-                        Button(action: session.addLayer, label: {
-                            Image(systemName: "plus")
-                            Text("Create new layer")
-                        })
-                        
-                        Button(action: session.duplicateLayer, label: {
-                            Image(systemName: "square.on.square")
-                            Text("Duplicate current layer")
-                        })
-                    }
-                    .foregroundColor(.red)
+                .alert("Generate frames", isPresented: $isFrameGenerationAlertPresented) {
+                    TextField("Enter frames count: ", value: $framesToGenerate, formatter: NumberFormatter())
+                    Button("Generate", action: {
+                        session.generateLayers(count: framesToGenerate)
+                    })
+                    Button("Cancel", role: .cancel) { }
                 }
                 
                 Button(action: openFramesList, label: {
@@ -152,13 +165,13 @@ struct SessionView: View {
             switch strategy {
             case .all:
                 Alert(
-                    title: Text("Do you want to remove all the layers?"),
+                    title: Text("Do you want to remove all the frames?"),
                     primaryButton: .destructive(Text("Remove all"), action: session.removeAllLayers),
                     secondaryButton: .cancel()
                 )
             case .current:
                 Alert(
-                    title: Text("Do you want to remove current layer?"),
+                    title: Text("Do you want to remove current frame?"),
                     primaryButton: .destructive(Text("Remove"), action: session.removeLayer),
                     secondaryButton: .cancel()
                 )

@@ -58,6 +58,31 @@ class DrawingSession: ObservableObject {
         layers[currentLayerIndex-1].copyContent(to: currentLayer)
     }
     
+    func generateLayers(count: Int) {
+        guard let canvasSize else { return }
+        
+        let newLayers = (0..<count).map { _ in
+            let layer = DrawingLayer()
+            let shapeSize: CGFloat = 50
+            let startPoint = CGPoint(
+                x: .random(in: 0..<canvasSize.width-shapeSize),
+                y: .random(in: 0..<canvasSize.height-shapeSize)
+            )
+            let shape = Shape(
+                type: .circle,
+                startPoint: startPoint,
+                endPoint: startPoint.applying(.init(translationX: shapeSize, y: shapeSize)),
+                width: 1,
+                color: .blue
+            )
+            layer.addShape(shape)
+            return layer
+        }
+        
+        layers.insert(contentsOf: newLayers, at: currentLayerIndex + 1)
+        currentLayerIndex += count
+    }
+    
     func removeLayer() {
         layers.remove(at: currentLayerIndex)
         
